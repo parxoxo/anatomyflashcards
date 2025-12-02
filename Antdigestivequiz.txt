@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Digestive Anatomy Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .options button {
+            display: block;
+            margin: 5px 0;
+            padding: 10px;
+            width: 200px;
+            cursor: pointer;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Digestive Anatomy Quiz</h1>
+    <div id="quiz"></div>
+    <div id="score" style="margin-top:20px; font-size:18px;"></div>
+
+    <script>
+        const questions = [
+            {
+                question: "1. What is the primary function of the small intestine?",
+                options: ["A) Water absorption", "B) Nutrient absorption", "C) Protein synthesis", "D) Detoxification"],
+                answer: "B"
+            },
+            {
+                question: "2. Which organ produces bile?",
+                options: ["A) Pancreas", "B) Gallbladder", "C) Liver", "D) Stomach"],
+                answer: "C"
+            },
+            {
+                question: "3. What are the four layers of the GI tract wall?",
+                options: ["A) Mucosa, Submucosa, Muscularis externa, Serosa",
+                          "B) Epithelium, Dermis, Muscle, Serosa",
+                          "C) Mucosa, Endothelium, Muscle, Peritoneum",
+                          "D) Submucosa, Epithelium, Muscle, Adventitia"],
+                answer: "A"
+            },
+            {
+                question: "4. Where does most chemical digestion occur?",
+                options: ["A) Stomach", "B) Duodenum", "C) Jejunum", "D) Large intestine"],
+                answer: "B"
+            },
+            {
+                question: "5. What is the main role of the large intestine?",
+                options: ["A) Protein digestion", "B) Fat emulsification", "C) Water absorption", "D) Enzyme secretion"],
+                answer: "C"
+            }
+        ];
+
+        let score = 0;
+        const quizDiv = document.getElementById('quiz');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+
+            const questionText = document.createElement('h3');
+            questionText.textContent = q.question;
+            questionDiv.appendChild(questionText);
+
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+
+            q.options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.onclick = () => {
+                    if (option.startsWith(q.answer)) {
+                        button.style.backgroundColor = 'lightgreen';
+                        score++;
+                    } else {
+                        button.style.backgroundColor = 'lightcoral';
+                    }
+                    Array.from(optionsDiv.children).forEach(btn => btn.disabled = true);
+                    showFeedback(questionDiv, option.startsWith(q.answer));
+                };
+                optionsDiv.appendChild(button);
+            });
+
+            questionDiv.appendChild(optionsDiv);
+            quizDiv.appendChild(questionDiv);
+        });
+
+        function showFeedback(div, correct) {
+            const feedback = document.createElement('div');
+            feedback.className = 'feedback';
+            feedback.textContent = correct ? "✅ Correct!" : "❌ Incorrect.";
+            div.appendChild(feedback);
+
+            if (document.querySelectorAll('.feedback').length === questions.length) {
+                document.getElementById('score').textContent = `Quiz Complete! Your score: ${score}/${questions.length}`;
+            }
+        }
+    </script>
+</body>
+</html>
